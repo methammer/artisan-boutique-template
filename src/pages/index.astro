@@ -1,0 +1,106 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import ProductCard from '../components/ProductCard.astro';
+
+// Données de produits factices (seront remplacées par des fichiers Markdown)
+const featuredProducts = [
+  { id: '1', name: 'Vase en Céramique "Océan"', price: '45.00€', imageUrl: 'https://via.placeholder.com/400x300.png/E2E8F0/4A5568?text=Produit+1', slug: 'vase-ceramique-ocean', category: 'Céramique' },
+  { id: '2', name: 'Collier en Argent "Lune"', price: '75.00€', imageUrl: 'https://via.placeholder.com/400x300.png/E2E8F0/4A5568?text=Produit+2', slug: 'collier-argent-lune', category: 'Bijoux' },
+  { id: '3', name: 'Planche à Découper en Noyer', price: '60.00€', imageUrl: 'https://via.placeholder.com/400x300.png/E2E8F0/4A5568?text=Produit+3', slug: 'planche-decouper-noyer', category: 'Ébénisterie' },
+];
+---
+<MainLayout title="Accueil">
+  <!-- Section Héro -->
+  <section class="bg-brand-secondary text-white py-20 md:py-32 text-center relative overflow-hidden">
+    <img src="https://via.placeholder.com/1920x800.png/CBD5E0/4A5568?text=Bannière+Héro" alt="Bannière Héro - Artisanat" class="absolute inset-0 w-full h-full object-cover opacity-50" loading="lazy"/>
+    <div class="container mx-auto px-4 relative z-10">
+      <h1 class="text-4xl md:text-6xl font-bold mb-6 font-serif">Créations Uniques, Fait Main</h1>
+      <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto">Découvrez l'art et la passion derrière chaque pièce. Un savoir-faire artisanal pour des objets qui ont une âme.</p>
+      <a href="/boutique" class="bg-brand-accent hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition-colors">
+        Découvrez nos créations
+      </a>
+    </div>
+  </section>
+
+  <!-- Section Produits Phares -->
+  <section class="py-16">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center mb-12">Nos Produits Phares</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {featuredProducts.map(product => (
+          <ProductCard product={product} />
+        ))}
+      </div>
+      <div class="text-center mt-12">
+        <a href="/boutique" class="text-brand-accent hover:underline font-semibold">
+          Voir toute la boutique &rarr;
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section Notre Histoire -->
+  <section class="bg-gray-100 py-16">
+    <div class="container mx-auto px-4 text-center md:text-left">
+      <div class="md:flex md:items-center md:space-x-12">
+        <div class="md:w-1/2 mb-8 md:mb-0">
+          <img src="https://via.placeholder.com/600x400.png/E2E8F0/4A5568?text=Artisan+au+travail" alt="L'artisan au travail" class="rounded-lg shadow-lg mx-auto md:mx-0" loading="lazy"/>
+        </div>
+        <div class="md:w-1/2">
+          <h2 class="text-3xl font-bold mb-6">Notre Histoire</h2>
+          <p class="text-lg text-gray-700 mb-6 leading-relaxed">
+            Animé par une passion pour [Type d'artisanat] et le désir de créer des objets beaux et durables, j'ai fondé [Nom de l'Atelier/Marque] en [Année]. Chaque pièce est le fruit d'un travail minutieux, alliant techniques traditionnelles et design contemporain.
+          </p>
+          <a href="/a-propos" class="text-brand-accent hover:underline font-semibold">
+            En savoir plus sur mon parcours &rarr;
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Optionnel: Témoignages Clients -->
+  <section class="py-16">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center mb-12">Ce que disent nos clients</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Témoignage 1 -->
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+          <p class="text-gray-700 italic mb-4">"Absolument magnifique ! La qualité est exceptionnelle et la pièce est encore plus belle en vrai. Service client au top."</p>
+          <p class="font-semibold text-right">- Client(e) Satisfait(e)</p>
+        </div>
+        <!-- Témoignage 2 -->
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+          <p class="text-gray-700 italic mb-4">"J'ai commandé un cadeau personnalisé et le résultat a dépassé mes attentes. L'artisan a été très à l'écoute."</p>
+          <p class="font-semibold text-right">- Un Autre Client(e)</p>
+        </div>
+        <!-- Témoignage 3 (placeholder) -->
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+          <p class="text-gray-700 italic mb-4">"Des créations originales qu'on ne trouve nulle part ailleurs. Je recommande vivement !"</p>
+          <p class="font-semibold text-right">- Fan d'Artisanat</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Optionnel: Newsletter -->
+  <section class="bg-brand-primary text-white py-16">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-3xl font-bold mb-4">Restons en contact !</h2>
+      <p class="mb-8 max-w-xl mx-auto">Inscrivez-vous à notre newsletter pour recevoir les dernières actualités, les nouveautés et des offres exclusives.</p>
+      <form name="newsletter" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" class="max-w-md mx-auto">
+        <input type="hidden" name="form-name" value="newsletter" />
+        <p class="hidden">
+          <label>Ne pas remplir si vous êtes humain: <input name="bot-field" /></label>
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <input type="email" name="email" placeholder="Votre adresse e-mail" required class="flex-grow p-3 rounded-md text-gray-800 focus:ring-2 focus:ring-brand-accent focus:outline-none" />
+          <button type="submit" class="bg-brand-accent hover:bg-red-700 text-white font-bold py-3 px-6 rounded-md transition-colors">
+            S'inscrire
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+</MainLayout>

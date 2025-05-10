@@ -1,0 +1,72 @@
+---
+export interface Product {
+  id: string;
+  name: string;
+  price: string;
+  imageUrl: string;
+  slug: string;
+  category?: string;
+  // Ajoutez d'autres champs si nécessaire
+}
+
+interface Props {
+  product: Product;
+}
+
+const { product } = Astro.props;
+---
+<div class="bg-white rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 group">
+  <a href={`/boutique/${product.slug}`} class="block">
+    <img src={product.imageUrl} alt={`Image de ${product.name}`} class="w-full h-64 object-cover group-hover:opacity-90 transition-opacity" loading="lazy" />
+    <div class="p-6">
+      {product.category && <p class="text-xs text-brand-secondary mb-1 uppercase tracking-wider">{product.category}</p>}
+      <h3 class="text-xl font-semibold mb-2 text-brand-primary group-hover:text-brand-accent transition-colors">{product.name}</h3>
+      <p class="text-lg font-bold text-brand-accent">{product.price}</p>
+    </div>
+  </a>
+  <div class="p-6 pt-0">
+     <button
+        data-product-id={product.id}
+        data-product-name={product.name}
+        data-product-price={parseFloat(product.price.replace('€', '').replace(',', '.'))}
+        data-product-image={product.imageUrl}
+        data-product-slug={product.slug}
+        class="add-to-cart-button w-full bg-brand-primary hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-md transition-colors"
+      >
+        Ajouter au panier
+      </button>
+  </div>
+</div>
+
+<script>
+  // Ce script sera global pour gérer l'ajout au panier
+  // Il sera déplacé ou amélioré plus tard
+  document.querySelectorAll('.add-to-cart-button').forEach(button => {
+    button.addEventListener('click', (event) => {
+      const target = event.currentTarget as HTMLButtonElement;
+      const product = {
+        id: target.dataset.productId!,
+        name: target.dataset.productName!,
+        price: parseFloat(target.dataset.productPrice!),
+        image: target.dataset.productImage!,
+        slug: target.dataset.productSlug!,
+        quantity: 1,
+      };
+
+      let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      const existingProductIndex = cart.findIndex(item => item.id === product.id);
+
+      if (existingProductIndex > -1) {
+        cart[existingProductIndex].quantity += 1;
+      } else {
+        cart.push(product);
+      }
+
+      localStorage.setItem('cart', JSON.stringify(cart));
+      alert(`${product.name} a été ajouté au panier !`);
+      
+      // Dispatch a custom event to update the cart count in the header
+      window.dispatchEvent(new CustomEvent('cartUpdated'));
+    });
+  });
+</script>

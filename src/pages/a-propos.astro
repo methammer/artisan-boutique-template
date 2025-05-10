@@ -1,0 +1,41 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+---
+<MainLayout title="À Propos">
+  <section class="py-12">
+    <div class="container mx-auto px-4">
+      <h1 class="text-4xl font-bold text-center mb-12">Mon Histoire, Ma Passion</h1>
+
+      <div class="prose prose-lg max-w-3xl mx-auto text-gray-700">
+        <div class="md:flex md:items-start md:space-x-12 mb-12">
+          <div class="md:w-1/3 mb-8 md:mb-0">
+            <img src="https://via.placeholder.com/400x500.png/E2E8F0/4A5568?text=Portrait+Artisan" alt="Portrait de l'artisan" class="rounded-lg shadow-lg w-full" loading="lazy"/>
+          </div>
+          <div class="md:w-2/3">
+            <h2 class="text-2xl font-semibold text-brand-primary mb-4">L'Artisan derrière les Créations</h2>
+            <p>Bonjour, je suis [Nom de l'Artisan], le cœur et les mains derrière [Nom de la Marque/Atelier]. Ma passion pour [Type d'artisanat] a commencé il y a [Nombre] années, presque par hasard, et s'est transformée en une véritable vocation.</p>
+            <p>Ce qui me fascine le plus, c'est la transformation de la matière brute – que ce soit l'argile, le métal, le bois ou le textile – en objets qui racontent une histoire, qui portent une émotion.</p>
+          </div>
+        </div>
+
+        <h2 class="text-2xl font-semibold text-brand-primary mt-12 mb-4">Mon Atelier, Mon Sanctuaire</h2>
+        <p>Mon atelier, situé à [Lieu/Ville ou description du lieu], est l'endroit où la magie opère. C'est un espace rempli d'outils anciens et modernes, d'odeurs de [matériaux], et d'une énergie créative constante. Vous pouvez voir quelques aperçus ci-dessous.</p>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 my-8">
+          <img src="https://via.placeholder.com/600x400.png/E2E8F0/4A5568?text=Atelier+1" alt="Photo de l'atelier 1" class="rounded-lg shadow-md" loading="lazy"/>
+          <img src="https://via.placeholder.com/600x400.png/E2E8F0/4A5568?text=Atelier+2" alt="Photo de l'atelier 2" class="rounded-lg shadow-md" loading="lazy"/>
+        </div>
+
+        <h2 class="text-2xl font-semibold text-brand-primary mt-12 mb-4">Mes Valeurs</h2>
+        <ul class="list-disc pl-5 space-y-2">
+          <li><strong>Fait Main avec Amour :</strong> Chaque pièce est unique, façonnée à la main avec une attention méticuleuse aux détails.</li>
+          <li><strong>Matériaux de Qualité :</strong> Je sélectionne avec soin des matériaux durables et, autant que possible, locaux ou éco-responsables.</li>
+          <li><strong>Savoir-Faire Traditionnel et Innovation :</strong> Je m'inspire des techniques ancestrales tout en explorant de nouvelles approches pour offrir des créations contemporaines.</li>
+          <li><strong>Authenticité :</strong> Ce que vous voyez est le reflet de ma passion et de mon engagement envers l'artisanat de qualité.</li>
+        </ul>
+
+        <p class="mt-8">N'hésitez pas à <a href="/contact">me contacter</a> si vous avez des questions ou si vous souhaitez discuter d'un projet personnalisé. Merci de soutenir l'artisanat !</p>
+      </div>
+    </div>
+  </section>
+</MainLayout>

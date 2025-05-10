@@ -1,0 +1,47 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import type { Product } from '../../components/ProductCard.astro';
+
+// Simuler la récupération de produits (sera remplacé par des fichiers Markdown)
+const allProducts: Product[] = [
+  { id: '1', name: 'Vase en Céramique "Océan"', price: '45.00€', imageUrl: 'https://via.placeholder.com/400x300.png/E2E8F0/4A5568?text=Produit+1', slug: 'vase-ceramique-ocean', category: 'Céramique' },
+  { id: '2', name: 'Collier en Argent "Lune"', price: '75.00€', imageUrl: 'https://via.placeholder.com/400x300.png/E2E8F0/4A5568?text=Produit+2', slug: 'collier-argent-lune', category: 'Bijoux' },
+  { id: '3', name: 'Planche à Découper en Noyer', price: '60.00€', imageUrl: 'https://via.placeholder.com/400x300.png/E2E8F0/4A5568?text=Produit+3', slug: 'planche-decouper-noyer', category: 'Ébénisterie' },
+  { id: '4', name: 'Bol en Grès "Rustique"', price: '35.00€', imageUrl: 'https://via.placeholder.com/400x300.png/E2E8F0/4A5568?text=Produit+4', slug: 'bol-gres-rustique', category: 'Céramique' },
+  { id: '5', name: 'Boucles d\'oreilles "Fleur"', price: '55.00€', imageUrl: 'https://via.placeholder.com/400x300.png/E2E8F0/4A5568?text=Produit+5', slug: 'boucles-oreilles-fleur', category: 'Bijoux' },
+  { id: '6', name: 'Lampe de Bureau en Chêne', price: '120.00€', imageUrl: 'https://via.placeholder.com/400x300.png/E2E8F0/4A5568?text=Produit+6', slug: 'lampe-bureau-chene', category: 'Ébénisterie' },
+];
+
+// TODO: Implémenter les filtres
+const categories = [...new Set(allProducts.map(p => p.category).filter(Boolean))];
+---
+<MainLayout title="Boutique">
+  <section class="py-8">
+    <div class="container mx-auto px-4">
+      <h1 class="text-4xl font-bold text-center mb-12">Notre Boutique</h1>
+
+      <!-- Filtres (Placeholder) -->
+      <div class="mb-8 p-4 bg-gray-100 rounded-lg">
+        <h3 class="text-xl font-semibold mb-3">Filtrer par :</h3>
+        <div class="flex flex-wrap gap-4">
+          <div>
+            <label for="category-filter" class="block text-sm font-medium text-gray-700">Catégorie</label>
+            <select id="category-filter" name="category" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-brand-accent focus:border-brand-accent sm:text-sm rounded-md">
+              <option value="">Toutes</option>
+              {categories.map(cat => <option value={cat}>{cat}</option>)}
+            </select>
+          </div>
+          <!-- Autres filtres (prix, nouveauté) peuvent être ajoutés ici -->
+        </div>
+      </div>
+
+      <!-- Grille de produits -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        {allProducts.map(product => (
+          <ProductCard product={product} />
+        ))}
+      </div>
+    </div>
+  </section>
+</MainLayout>

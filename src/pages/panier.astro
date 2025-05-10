@@ -1,0 +1,205 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+---
+<MainLayout title="Votre Panier">
+  <section class="py-12">
+    <div class="container mx-auto px-4">
+      <h1 class="text-4xl font-bold text-center mb-12">Votre Panier d'Achat</h1>
+      <div id="cart-items-container" class="bg-white p-6 rounded-lg shadow-lg">
+        <!-- Les articles du panier seront injectés ici par JavaScript -->
+        <p id="empty-cart-message" class="text-gray-600 text-center py-8">Votre panier est actuellement vide.</p>
+      </div>
+
+      <div id="cart-summary" class="mt-8 bg-gray-100 p-6 rounded-lg shadow-md hidden">
+        <h2 class="text-2xl font-semibold mb-6">Récapitulatif de la commande</h2>
+        <div class="space-y-3 mb-6">
+          <div class="flex justify-between">
+            <span>Sous-total :</span>
+            <span id="cart-subtotal">0.00€</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Frais de port :</span>
+            <span id="cart-shipping">Calculés à l'étape suivante (ou 5.00€)</span>
+          </div>
+          <hr class="my-2">
+          <div class="flex justify-between font-bold text-xl">
+            <span>Total Général :</span>
+            <span id="cart-total">0.00€</span>
+          </div>
+        </div>
+        <button id="checkout-button" class="w-full bg-brand-accent hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition-colors">
+          Passer à la Caisse
+        </button>
+        <p class="text-xs text-gray-500 mt-4 text-center">Les paiements sont sécurisés via Stripe.</p>
+      </div>
+    </div>
+  </section>
+</MainLayout>
+
+<script>
+  const cartItemsContainer = document.getElementById('cart-items-container')!;
+  const emptyCartMessage = document.getElementById('empty-cart-message')!;
+  const cartSummaryDiv = document.getElementById('cart-summary')!;
+  const cartSubtotalEl = document.getElementById('cart-subtotal')!;
+  const cartShippingEl = document.getElementById('cart-shipping')!; // Pour l'instant fixe ou placeholder
+  const cartTotalEl = document.getElementById('cart-total')!;
+  const checkoutButton = document.getElementById('checkout-button')!;
+
+  const SHIPPING_COST = 5.00; // Coût de livraison fixe pour l'exemple
+
+  function formatPrice(amount) {
+    return amount.toFixed(2).replace('.', ',') + '€';
+  }
+
+  function renderCart() {
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    
+    // Clear previous items except the empty message template
+    while (cartItemsContainer.firstChild && cartItemsContainer.firstChild !== emptyCartMessage) {
+        cartItemsContainer.removeChild(cartItemsContainer.firstChild);
+    }
+
+
+    if (cart.length === 0) {
+      emptyCartMessage.classList.remove('hidden');
+      cartSummaryDiv.classList.add('hidden');
+      return;
+    }
+
+    emptyCartMessage.classList.add('hidden');
+    cartSummaryDiv.classList.remove('hidden');
+
+    let subtotal = 0;
+
+    cart.forEach((item, index) => {
+      const itemTotal = item.price * item.quantity;
+      subtotal += itemTotal;
+
+      const itemDiv = document.createElement('div');
+      itemDiv.className = 'flex items-center justify-between py-4 border-b border-gray-200 last:border-b-0';
+      itemDiv.innerHTML = `
+        <div class="flex items-center space-x-4">
+          <img src="${item.image}" alt="${item.name}" class="w-20 h-20 object-cover rounded-md">
+          <div>
+            <h3 class="text-lg font-semibold text-brand-primary">${item.name}</h3>
+            <p class="text-sm text-gray-500">Prix unitaire: ${formatPrice(item.price)}</p>
+          </div>
+        </div>
+        <div class="flex items-center space-x-4">
+          <div class="flex items-center border border-gray-300 rounded">
+            <button data-index="${index}" class="quantity-decrease px-2 py-1 text-gray-700 hover:bg-gray-100">-</button>
+            <input type="number" value="${item.quantity}" min="1" class="w-12 text-center border-l border-r border-gray-300 quantity-input" data-index="${index}" readonly>
+            <button data-index="${index}" class="quantity-increase px-2 py-1 text-gray-700 hover:bg-gray-100">+</button>
+          </div>
+          <p class="text-lg font-semibold w-24 text-right">${formatPrice(itemTotal)}</p>
+          <button data-index="${index}" class="remove-item text-red-500 hover:text-red-700">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12.56 0c1.153 0 2.24.032 3.223.094C7.071 5.838 7.5 6.318 7.5 6.908v.003c0 .59.429 1.07 1.007 1.116A48.32 48.32 0 0 1 12 8.25c1.153 0 2.24-.032 3.223-.094C15.929 8.12 16.5 7.5 16.5 6.908v-.003c0-.59-.429-1.07-1.007-1.116M6.538 9.75h10.924" />
+            </svg>
+          </button>
+        </div>
+      `;
+      // Prepend to keep empty message at the bottom if it were to be shown
+      cartItemsContainer.insertBefore(itemDiv, emptyCartMessage);
+    });
+
+    cartSubtotalEl.textContent = formatPrice(subtotal);
+    cartShippingEl.textContent = formatPrice(SHIPPING_COST); // Ou logique de calcul plus tard
+    cartTotalEl.textContent = formatPrice(subtotal + SHIPPING_COST);
+
+    addCartEventListeners();
+    window.dispatchEvent(new CustomEvent('cartUpdated')); // Update header count
+  }
+
+  function updateQuantity(index, change) {
+    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    if (cart[index]) {
+      cart[index].quantity += change;
+      if (cart[index].quantity <= 0) {
+        cart.splice(index, 1); // Remove item if quantity is 0 or less
+      }
+      localStorage.setItem('cart', JSON.stringify(cart));
+      renderCart();
+    }
+  }
+
+  function removeItem(index) {
+    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    cart.splice(index, 1);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    renderCart();
+  }
+
+  function addCartEventListeners() {
+    document.querySelectorAll('.quantity-decrease').forEach(button => {
+      button.addEventListener('click', (e) => updateQuantity(parseInt((e.currentTarget as HTMLElement).dataset.index!), -1));
+    });
+    document.querySelectorAll('.quantity-increase').forEach(button => {
+      button.addEventListener('click', (e) => updateQuantity(parseInt((e.currentTarget as HTMLElement).dataset.index!), 1));
+    });
+    document.querySelectorAll('.remove-item').forEach(button => {
+      button.addEventListener('click', (e) => removeItem(parseInt((e.currentTarget as HTMLElement).dataset.index!)));
+    });
+  }
+  
+  checkoutButton.addEventListener('click', async () => {
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    if (cart.length === 0) {
+      alert("Votre panier est vide.");
+      return;
+    }
+
+    try {
+      // Désactiver le bouton pour éviter les clics multiples
+      checkoutButton.disabled = true;
+      checkoutButton.textContent = 'Traitement...';
+
+      const response = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ cart }), // Envoyer le panier complet
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Erreur lors de la création de la session de paiement.');
+      }
+
+      const { sessionId } = await response.json();
+      
+      // Rediriger vers Stripe Checkout
+      // Assurez-vous que votre clé publique Stripe est chargée
+      // Pour l'instant, nous allons juste logguer l'ID de session
+      // Dans une vraie app, vous utiliseriez Stripe.js pour rediriger :
+      // const stripe = Stripe('VOTRE_CLE_PUBLIQUE_STRIPE');
+      // await stripe.redirectToCheckout({ sessionId });
+      alert(`Session de paiement créée : ${sessionId}. Redirection vers Stripe... (simulation)`);
+      console.log("Stripe Session ID:", sessionId);
+      // Ici, vous devriez rediriger vers la page de paiement Stripe.
+      // Par exemple: window.location.href = `URL_STRIPE_CHECKOUT/${sessionId}`;
+      // Pour ce PoC, nous allons vider le panier et afficher un message.
+      // localStorage.removeItem('cart');
+      // renderCart();
+      // window.location.href = '/confirmation-commande'; // Simuler une redirection vers une page de confirmation
+
+    } catch (error) {
+      console.error("Erreur de paiement:", error);
+      alert(`Erreur: ${error.message}`);
+    } finally {
+      // Réactiver le bouton
+      checkoutButton.disabled = false;
+      checkoutButton.textContent = 'Passer à la Caisse';
+    }
+  });
+
+
+  // Render cart on page load
+  document.addEventListener('astro:page-load', renderCart);
+  if (document.readyState !== 'loading') {
+    renderCart();
+  } else {
+    document.addEventListener('DOMContentLoaded', renderCart);
+  }
+</script>

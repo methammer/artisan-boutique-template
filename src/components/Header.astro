@@ -1,0 +1,75 @@
+---
+const navLinks = [
+  { href: "/", label: "Accueil" },
+  { href: "/boutique", label: "Boutique" },
+  { href: "/a-propos", label: "À Propos" },
+  { href: "/contact", label: "Contact" },
+];
+---
+<header class="bg-white shadow-md sticky top-0 z-50">
+  <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+    <a href="/" class="text-2xl font-bold font-serif text-brand-primary">
+      Artisan<span class="text-brand-accent">.</span>Nom
+    </a>
+    <div class="hidden md:flex space-x-6">
+      {navLinks.map(link => (
+        <a href={link.href} class="text-gray-600 hover:text-brand-primary transition-colors">{link.label}</a>
+      ))}
+    </div>
+    <div class="flex items-center space-x-4">
+      <a href="/panier" class="relative text-gray-600 hover:text-brand-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+        </svg>
+        <span id="cart-count" class="absolute -top-2 -right-2 bg-brand-accent text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+      </a>
+      <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-brand-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="md:hidden hidden bg-white shadow-lg py-2">
+    {navLinks.map(link => (
+      <a href={link.href} class="block px-4 py-2 text-gray-600 hover:bg-gray-100">{link.label}</a>
+    ))}
+  </div>
+</header>
+
+<script>
+  const mobileMenuButton = document.getElementById('mobile-menu-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+  let cartCountEl = document.getElementById('cart-count');
+
+  mobileMenuButton?.addEventListener('click', () => {
+    mobileMenu?.classList.toggle('hidden');
+  });
+
+  function updateCartCount() {
+    if (!cartCountEl) cartCountEl = document.getElementById('cart-count'); // Re-select if not found initially
+    if (cartCountEl) {
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      cartCountEl.textContent = cart.reduce((sum, item) => sum + item.quantity, 0).toString();
+    }
+  }
+
+  // Update cart count on page load
+  document.addEventListener('astro:page-load', () => {
+    // Re-select cartCountEl as it might not be available on initial script execution
+    // if the header is part of a layout that re-renders.
+    cartCountEl = document.getElementById('cart-count');
+    updateCartCount();
+  });
+  
+  // Listen for custom cart update events
+  window.addEventListener('cartUpdated', updateCartCount);
+
+  // Initial call in case astro:page-load doesn't fire immediately or for static sites
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', updateCartCount);
+  } else {
+    updateCartCount();
+  }
+</script>

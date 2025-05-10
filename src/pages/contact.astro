@@ -1,0 +1,66 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+---
+<MainLayout title="Contact">
+  <section class="py-12">
+    <div class="container mx-auto px-4">
+      <h1 class="text-4xl font-bold text-center mb-12">Contactez-moi</h1>
+
+      <div class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+        <p class="text-lg text-gray-700 mb-8 text-center">
+          Une question ? Une demande de création sur mesure ? N'hésitez pas à me laisser un message, je vous répondrai dans les meilleurs délais.
+        </p>
+
+        <form name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" class="space-y-6">
+          <input type="hidden" name="form-name" value="contact" />
+          <p class="hidden">
+            <label>Ne pas remplir si vous êtes humain: <input name="bot-field" /></label>
+          </p>
+
+          <div>
+            <label for="name" class="block text-sm font-medium text-gray-700">Nom complet</label>
+            <input type="text" name="name" id="name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-accent focus:border-brand-accent sm:text-sm" placeholder="Votre nom et prénom">
+          </div>
+
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700">Adresse e-mail</label>
+            <input type="email" name="email" id="email" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-accent focus:border-brand-accent sm:text-sm" placeholder="votre.email@example.com">
+          </div>
+
+          <div>
+            <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
+            <textarea id="message" name="message" rows="4" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-accent focus:border-brand-accent sm:text-sm" placeholder="Votre message..."></textarea>
+          </div>
+
+          <div>
+            <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-accent hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-accent transition-colors">
+              Envoyer le message
+            </button>
+          </div>
+        </form>
+
+        <div class="mt-12 pt-8 border-t border-gray-200">
+          <h3 class="text-xl font-semibold text-brand-primary mb-4 text-center">Autres moyens de me joindre :</h3>
+          <div class="text-center text-gray-700 space-y-2">
+            <p><strong>Email :</strong> <a href="mailto:contact@artisan-nom.com">contact@artisan-nom.com</a> (à remplacer)</p>
+            <p><strong>Téléphone :</strong> 01 23 45 67 89 (optionnel, à remplacer)</p>
+            <p><strong>Réseaux Sociaux :</strong>
+              <a href="#" class="hover:text-brand-accent">Instagram</a> | 
+              <a href="#" class="hover:text-brand-accent">Facebook</a> (liens à remplacer)
+            </p>
+            <!-- Optionnel: Carte Google Maps -->
+            <!-- 
+            <div class="mt-6">
+              <h4 class="text-lg font-medium mb-2">Mon Atelier (sur rendez-vous)</h4>
+              <p>123 Rue de l'Artisanat, 75000 Paris</p>
+              <div class="aspect-w-16 aspect-h-9 mt-2 rounded-lg overflow-hidden shadow-md">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.991625996838!2d2.292292615674475!3d48.85837007928748!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66e2964e34e2d%3A0x8ddca9ee380ef7e0!2sTour%20Eiffel!5e0!3m2!1sfr!2sfr!4v1620000000000!5m2!1sfr!2sfr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+              </div>
+            </div>
+            -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</MainLayout>

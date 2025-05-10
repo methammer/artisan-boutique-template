@@ -1,0 +1,31 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[dev]
+  command = "npm run dev"
+  targetPort = 4321 # Port par défaut d'Astro
+  publish = "dist" # Nécessaire pour que Netlify Dev serve les assets correctement
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# Configuration pour Netlify Forms (exemple pour le formulaire de contact et newsletter)
+[[plugins]]
+  package = "@netlify/plugin-functions-install-core"
+
+# Permet d'utiliser les variables d'environnement Netlify pendant le build
+[context.production.environment]
+  # STRIPE_SECRET_KEY = "sk_live_YOUR_LIVE_SECRET_KEY" # À configurer dans l'UI Netlify
+  # STRIPE_PUBLISHABLE_KEY = "pk_live_YOUR_LIVE_PUBLISHABLE_KEY" # À configurer dans l'UI Netlify
+[context.dev.environment]
+  # STRIPE_SECRET_KEY = "sk_test_YOUR_TEST_SECRET_KEY" # À configurer dans l'UI Netlify ou .env
+  # STRIPE_PUBLISHABLE_KEY = "pk_test_YOUR_TEST_PUBLISHABLE_KEY" # À configurer dans l'UI Netlify ou .env
+
+# Pour les formulaires Netlify
+[template.environment]
+  # Ces variables sont utiles si vous voulez pré-remplir des choses
+  # ou avoir des valeurs par défaut pour les fonctions serverless

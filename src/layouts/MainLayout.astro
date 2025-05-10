@@ -1,0 +1,51 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css'; // Importation des styles globaux Tailwind
+
+interface Props {
+	title: string;
+  description?: string;
+}
+
+const { title, description = "Site d'artisan - Découvrez des créations uniques faites à la main" } = Astro.props;
+const siteURL = Astro.site ? Astro.site.toString() : 'http://localhost:4321'; // Fallback for safety
+const canonicalURL = new URL(Astro.url.pathname, siteURL);
+---
+<!doctype html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content={description} />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title} | Artisan Créateur</title>
+
+    <!-- SEO Meta Tags -->
+    <link rel="canonical" href={canonicalURL.toString()} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL.toString()} />
+    <meta property="og:image" content="/images/og-image.jpg" /> {/* Placeholder OG image */}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="/images/og-image.jpg" /> {/* Placeholder Twitter image */}
+
+    <script is:inline>
+      // Simple script pour gérer le panier (sera amélioré)
+      if (!localStorage.getItem('cart')) {
+        localStorage.setItem('cart', JSON.stringify([]));
+      }
+    </script>
+	</head>
+	<body class="flex flex-col min-h-screen">
+		<Header />
+		<main class="flex-grow container mx-auto px-4 py-8">
+			<slot />
+		</main>
+		<Footer />
+	</body>
+</html>
