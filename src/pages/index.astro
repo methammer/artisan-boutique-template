@@ -1,18 +1,26 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
 import ProductCard from '../components/ProductCard.astro';
+import type { Product } from '../components/ProductCard.astro';
 
-// Données de produits factices (seront remplacées par des fichiers Markdown)
-const featuredProducts = [
-  { id: '1', name: 'Vase en Céramique "Océan"', price: '45.00€', imageUrl: 'https://via.placeholder.com/400x300.png/E2E8F0/4A5568?text=Produit+1', slug: 'vase-ceramique-ocean', category: 'Céramique' },
-  { id: '2', name: 'Collier en Argent "Lune"', price: '75.00€', imageUrl: 'https://via.placeholder.com/400x300.png/E2E8F0/4A5568?text=Produit+2', slug: 'collier-argent-lune', category: 'Bijoux' },
-  { id: '3', name: 'Planche à Découper en Noyer', price: '60.00€', imageUrl: 'https://via.placeholder.com/400x300.png/E2E8F0/4A5568?text=Produit+3', slug: 'planche-decouper-noyer', category: 'Ébénisterie' },
+// Données de produits avec des URLs d'images thématiques (Pexels)
+const featuredProducts: Product[] = [
+  { id: '1', name: 'Vase en Céramique "Océan"', price: '45.00€', imageUrl: 'https://images.pexels.com/photos/7194915/pexels-photo-7194915.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&dpr=1', slug: 'vase-ceramique-ocean', category: 'Céramique' },
+  { id: '2', name: 'Collier en Argent "Lune"', price: '75.00€', imageUrl: 'https://images.pexels.com/photos/1191531/pexels-photo-1191531.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&dpr=1', slug: 'collier-argent-lune', category: 'Bijoux' },
+  { id: '3', name: 'Planche à Découper en Noyer', price: '60.00€', imageUrl: 'https://images.pexels.com/photos/5733421/pexels-photo-5733421.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&dpr=1', slug: 'planche-decouper-noyer', category: 'Ébénisterie' },
 ];
 ---
-<MainLayout title="Accueil">
+<MainLayout title="Accueil - Artisan.Nom">
   <!-- Section Héro -->
   <section class="bg-brand-secondary text-white py-20 md:py-32 text-center relative overflow-hidden">
-    <img src="https://via.placeholder.com/1920x800.png/CBD5E0/4A5568?text=Bannière+Héro" alt="Bannière Héro - Artisanat" class="absolute inset-0 w-full h-full object-cover opacity-50" loading="lazy"/>
+    <img 
+      src="https://images.pexels.com/photos/1092730/pexels-photo-1092730.jpeg?auto=compress&cs=tinysrgb&w=1920&h=800&dpr=1" 
+      alt="Bannière abstraite texturée aux couleurs douces évoquant l'artisanat" 
+      class="absolute inset-0 w-full h-full object-cover opacity-50" 
+      loading="eager" 
+      width="1920" 
+      height="800"
+    />
     <div class="container mx-auto px-4 relative z-10">
       <h1 class="text-4xl md:text-6xl font-bold mb-6 font-serif">Créations Uniques, Fait Main</h1>
       <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto">Découvrez l'art et la passion derrière chaque pièce. Un savoir-faire artisanal pour des objets qui ont une âme.</p>
@@ -44,12 +52,19 @@ const featuredProducts = [
     <div class="container mx-auto px-4 text-center md:text-left">
       <div class="md:flex md:items-center md:space-x-12">
         <div class="md:w-1/2 mb-8 md:mb-0">
-          <img src="https://via.placeholder.com/600x400.png/E2E8F0/4A5568?text=Artisan+au+travail" alt="L'artisan au travail" class="rounded-lg shadow-lg mx-auto md:mx-0" loading="lazy"/>
+          <img 
+            src="https://images.pexels.com/photos/2166503/pexels-photo-2166503.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&dpr=1" 
+            alt="Artisan potier travaillant l'argile sur un tour dans son atelier" 
+            class="rounded-lg shadow-lg mx-auto md:mx-0" 
+            loading="lazy"
+            width="600"
+            height="400"
+          />
         </div>
         <div class="md:w-1/2">
           <h2 class="text-3xl font-bold mb-6">Notre Histoire</h2>
           <p class="text-lg text-gray-700 mb-6 leading-relaxed">
-            Animé par une passion pour [Type d'artisanat] et le désir de créer des objets beaux et durables, j'ai fondé [Nom de l'Atelier/Marque] en [Année]. Chaque pièce est le fruit d'un travail minutieux, alliant techniques traditionnelles et design contemporain.
+            Animé par une passion pour la création manuelle et le désir de créer des objets beaux et durables, j'ai fondé mon atelier en [Année]. Chaque pièce est le fruit d'un travail minutieux, alliant techniques traditionnelles et design contemporain. Je m'inspire de la nature et des formes organiques pour donner vie à des céramiques, bijoux et objets en bois uniques.
           </p>
           <a href="/a-propos" class="text-brand-accent hover:underline font-semibold">
             En savoir plus sur mon parcours &rarr;
@@ -104,3 +119,7 @@ const featuredProducts = [
   </section>
 
 </MainLayout>
+<script>
+// Le script existant pour ProductCard est dans ProductCard.astro et gère l'ajout au panier.
+// Il n'y a pas de script spécifique à la page index.astro à modifier pour les images ici.
+</script>
